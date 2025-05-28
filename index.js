@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 res.send('funciona')
 })
 
-const PORT = 3000
+const PORT = process.env.PORT;
 dbConnecction()
  
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
