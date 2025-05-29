@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
 
+router.get('/', (req, res) => {
+  res.redirect('/products');
+});
+
 //RUTAS DE VISTA AL PUBLICO
 router.get('/products', productController.showProducts); // Devuelve todos los productos. Cada producto tendrá un enlace a su página de detalle.
 router.get('/products/:productId', productController.showProductById); //Devuelve el detalle de un producto.
