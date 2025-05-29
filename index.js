@@ -3,9 +3,11 @@ const app = express()
 require('dotenv').config();
 const dbConnecction = require('./config/db.js')
 const productRoutes = require('./routes/productRoutes');
+const methodOverride = require('method-override');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'));
 
 app.use('/', productRoutes);
 
