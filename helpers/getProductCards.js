@@ -13,3 +13,4 @@ function getProductCards(products) {
   }
   return html;
 }
+module.exports = getProductCards;
