@@ -7,7 +7,7 @@ const productRoutes = require('./routes/productRoutes');
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api', productRoutes);
+app.use('/', productRoutes);
 
 
 const PORT = process.env.PORT;
