@@ -7,6 +7,7 @@ const baseHtml = require('../helpers/baseHtml');
 const productController = {
      showProducts: async (req, res) => {
     try {
+     const isDashboard = req.originalUrl.includes('/dashboard');
       const products = await Product.find();
       const productCards = getProductCards(products);
       const html = baseHtml + getNavBar() + productCards;

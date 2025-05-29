@@ -1,4 +1,4 @@
-function getProductCards(products) {
+function getProductCards(products, isDashboard = false) {
   let html = '';
   for (let product of products) {
     html += `
@@ -8,9 +8,14 @@ function getProductCards(products) {
         <p>${product.description}</p>
         <p>${product.price}€</p>
         <a href="/products/${product._id}">Ver detalle</a>
-      </div>
-    `;
+        ${isDashboard ? `
+          <a href="/dashboard/${product._id}/edit">Editar</a>
+          <form action="/dashboard/${product._id}/delete" method="POST" style="display:inline;">
+            <button type="submit">Eliminar</button>
+          </form>` : ''}
+      </div>`;
   }
   return html;
-}
-module.exports = getProductCards;
+};
+
+module.exports = getProductCards
