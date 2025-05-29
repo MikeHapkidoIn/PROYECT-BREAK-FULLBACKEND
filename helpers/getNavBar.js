@@ -1,6 +1,6 @@
 function getNavBar(isDashboard = false) {
   // Definimos las categorías de ejemplo
-  const categories = ['Remeras', 'Zapatillas', 'Accesorios'];
+  const categories = ['home','Camisetas', 'Pantalon', 'Zapatillas', 'Accesorios, Login'];
 
   // Creamos los enlaces de categorías
   let categoryLinks = categories.map(category => 
@@ -10,7 +10,7 @@ function getNavBar(isDashboard = false) {
   // Si estamos en el dashboard, añadimos un enlace extra para subir producto nuevo
   let dashboardLink = '';
   if (isDashboard) {
-    dashboardLink = ` | <a href="/dashboard/products/new">Subir nuevo producto</a>`;
+    dashboardLink = ` | <a href="/dashboard/new">Subir nuevo producto</a>`;
   }
 
   // Armamos el HTML completo de la barra de navegación

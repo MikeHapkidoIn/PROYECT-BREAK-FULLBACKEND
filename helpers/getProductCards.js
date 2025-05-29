@@ -10,7 +10,7 @@ function getProductCards(products, isDashboard = false) {
         <a href="/products/${product._id}">Ver detalle</a>
         ${isDashboard ? `
           <a href="/dashboard/${product._id}/edit">Editar</a>
-          <form action="/dashboard/${product._id}/delete" method="POST" style="display:inline;">
+          <form action="/dashboard/${product._id}/delete?_method=DELETE" method="POST" style="display:inline;">
             <button type="submit">Eliminar</button>
           </form>` : ''}
       </div>`;
@@ -18,4 +18,4 @@ function getProductCards(products, isDashboard = false) {
   return html;
 };
 
-module.exports = getProductCards
+module.exports = getProductCards;
