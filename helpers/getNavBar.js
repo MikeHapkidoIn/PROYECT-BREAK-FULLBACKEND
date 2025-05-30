@@ -27,17 +27,15 @@ module.exports = function getNavBar() {
   return `
     <nav>
       <a href="/">Inicio</a>
-      <div class="dropdown">
-        <a href="/products">Productos</a>  
-        <div class = "dropdown-content">
-          <a href= "/products/camisetas">Camisetas</a>
-          <a href= "/products/pantalones">Pantalones</a>
-          <a href= "/products/zapatillas">Zapatillas</a>
-          <a href= "/products/accessorios">Accesorios</a>
-      </div>
+      <a href="/camisetas">Camisetas</a>
+      <a href="/pantalones">Pantalones</a>
+      <a href="/zapatillas">Zapatillas</a>
+      <a href="/accessorios">Accesorios</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/">Login</a>
+    </nav>     
+     
+     
 
-      <a href = "/dashboard">Dashboard</a>
-      <a href = "/">Login</a>
-    </nav>
   `;
 };
