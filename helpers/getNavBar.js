@@ -1,6 +1,6 @@
-function getNavBar(isDashboard = false) {
+/*function getNavBar(isDashboard = false) {
   // Definimos las categorías de ejemplo
-  const categories = ['home','Camisetas', 'Pantalon', 'Zapatillas', 'Accesorios, Login'];
+  const categories = ['home','Camisetas', 'Pantalon', 'Zapatillas', 'Accesorios', 'Login'];
 
   // Creamos los enlaces de categorías
   let categoryLinks = categories.map(category => 
@@ -22,4 +22,22 @@ function getNavBar(isDashboard = false) {
   `;
 }
 
-module.exports = getNavBar;
+module.exports = getNavBar;*/
+module.exports = function getNavBar() {
+  return `
+    <nav>
+      <a href="/">Inicio</a>
+      <div class="dropdown">
+        <a href="/products">Productos</a>  
+        <div class = "dropdown-content">
+          <a href= "/products/camisetas">Camisetas</a>
+          <a href= "/products/pantalones">Pantalones</a>
+          <a href= "/products/zapatillas">Zapatillas</a>
+          <a href= "/products/accessorios">Accesorios</a>
+      </div>
+
+      <a href = "/dashboard">Dashboard</a>
+      <a href = "/">Login</a>
+    </nav>
+  `;
+};
