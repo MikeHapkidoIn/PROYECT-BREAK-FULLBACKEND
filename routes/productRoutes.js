@@ -11,15 +11,16 @@ router.get('/', (req, res) => {
 router.get('/products', productController.showProducts); // Devuelve todos los productos. Cada producto tendrá un enlace a su página de detalle.
 router.get('/products/:productId', productController.showProductById); //Devuelve el detalle de un producto.
 
-//RUTAS PARA EL ADMINISTRADOR
-//vista
-router.get('/dashboard', productController.showDashboard); //Devuelve el dashboard del administrador, En el dashboard aparecerán todos los artículos que se hayan subido. Si clickamos en uno de ellos nos llevará a su página para poder actualizarlo o eliminarlo.
-router.get('/dashboard/new', productController.showNewProductForm); // Devuelve el formulario para subir un artículo nuevo.
+// RUTAS ADMIN
+router.post('/dashboard', productController.createProduct);//Crea un nuevo producto. Esta es la de prueba con los nuevos controllers
+router.get('/dashboard', productController.showProducts); //Devuelve el dashboard del administrador, En el dashboard aparecerán todos los artículos que se hayan subido. Si clickamos en uno de ellos nos llevará a su página para poder actualizarlo o eliminarlo.
 router.get('/dashboard/:productId', productController.showProductById); // Devuelve el detalle de un producto en el dashboard.      
+
+router.get('/dashboard/new', productController.showNewProductForm); // Devuelve el formulario para subir un artículo nuevo.
 router.get('/dashboard/:productId/edit', productController.showEditProductForm); // Devuelve el formulario para editar un producto.
 
 //crea y actualiza
-router.post('/dashboard', productController.createProduct);//Crea un nuevo producto.
+//router.post('/dashboard', productController.createProduct);//Crea un nuevo producto.
 router.post('/dashboard', upload.single('image'), productController.createProduct); //router.post('/dashboard', auth, upload.single('image'), productController.createProduct);
 router.put('/dashboard/:productId', productController.updateProduct); // Actualiza un producto.
 
