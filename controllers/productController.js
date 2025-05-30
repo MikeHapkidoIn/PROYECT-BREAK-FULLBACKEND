@@ -1,10 +1,19 @@
 const { Product, sizes, categories } = require('../models/Product');
-const getNavBar = require('../helpers/getNavBar');
-const getProductCards = require('../helpers/getProductCards');
-const baseHtml = require('../helpers/baseHtml');
+//const getNavBar = require('../helpers/getNavBar');
+//const getProductCards = require('../helpers/getProductCards');
+//const baseHtml = require('../helpers/baseHtml');
+
 
 const productController = {
-    
+  showProducts: async (req, res) =>{
+    try {
+       const products = await Product.find();
+       res.status(200).json(products);
+    }catch (error) {
+      res.status(500).send('Error al cargar productos');
+    }
+  }
+/*    
 showProducts: async (req, res) => {
   try {
     const products = await Product.find();
@@ -103,9 +112,9 @@ showNewProductForm: (req, res) => {
     </html>
   `;
   res.send(html);
-},
+},*/
 
-createProduct: async (req, res) => {
+/*createProduct: async (req, res) => {
   try {
     const { name, description, image, category, size, price } = req.body;
     const newProduct = new Product({ name, description, image, category, size, price });
@@ -113,6 +122,23 @@ createProduct: async (req, res) => {
     res.redirect('/dashboard');
   } catch (error) {
     res.status(500).send('Error al crear producto');
+  }
+},*/
+ /*createProduct: async (req, res) => { //Para meter multer
+  try {
+    const imageUrl = req.file?.path; // URL pública de Cloudinary
+
+    const newProduct = new Product({
+      nombre: req.body.nombre,
+      precio: req.body.precio,
+      categoria: req.body.categoria,
+      image: imageUrl
+    });
+
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear el producto', error: err });
   }
 },
 
@@ -177,7 +203,7 @@ deleteProduct: async (req, res) => {
   } catch (error) {
     res.status(500).send('Error al eliminar producto');
   }
-}
+}*/
 
 }
 

@@ -7,3 +7,29 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+module.exports = cloudinary;
+
+
+/*const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const category = req.body.category || 'general';
+    return {
+      folder: `ecommerce/${category}`,
+      allowed_formats: ['jpg', 'png', 'jpeg'],
+      transformation: [{ width: 500, height: 500, crop: 'limit' }],
+      public_id: `${Date.now()}-${file.originalname.split('.')[0]}`
+    }
+  }
+});
+*/
+/*module.exports = {
+  cloudinary,
+  storage
+};*/
+
+
+
+  
+  
+

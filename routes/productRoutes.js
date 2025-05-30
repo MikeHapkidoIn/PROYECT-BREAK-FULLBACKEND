@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const upload = require('../middlewares/uploadMiddleware');
 
 router.get('/', (req, res) => {
   res.redirect('/products');
@@ -19,6 +20,7 @@ router.get('/dashboard/:productId/edit', productController.showEditProductForm);
 
 //crea y actualiza
 router.post('/dashboard', productController.createProduct);//Crea un nuevo producto.
+router.post('/dashboard', upload.single('image'), productController.createProduct); //router.post('/dashboard', auth, upload.single('image'), productController.createProduct);
 router.put('/dashboard/:productId', productController.updateProduct); // Actualiza un producto.
 
 //elimina
