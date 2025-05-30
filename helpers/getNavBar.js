@@ -43,3 +43,10 @@ module.exports = function getNavBar() {
 </nav>
   `;
 };
+ const toggle = document.getElementById("toggleDropdown");
+  const content = document.getElementById("dropdownContent");
+
+  toggle.addEventListener("click", function (event) {
+    event.preventDefault(); // evita que el <a> recargue la página
+    content.style.display = content.style.display === "none" ? "block" : "none";
+  });
