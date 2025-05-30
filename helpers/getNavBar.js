@@ -26,27 +26,13 @@ module.exports = getNavBar;*/
 module.exports = function getNavBar() {
   return `
     <nav>
-  <a href="/">Inicio</a>
-
-  <div class="dropdown">
-    <a href="#" id="toggleDropdown">Productos ▼</a>
-    <div id="dropdownContent" style="display: none;">
+      <a href="/">Inicio</a>
       <a href="/products/camisetas">Camisetas</a>
       <a href="/products/pantalones">Pantalones</a>
       <a href="/products/zapatillas">Zapatillas</a>
       <a href="/products/accessorios">Accesorios</a>
-    </div>
-  </div>
-
-  <a href="/dashboard">Dashboard</a>
-  <a href="/">Login</a>
-</nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/">Login</a>
+    </nav>
   `;
 };
- const toggle = document.getElementById("toggleDropdown");
-  const content = document.getElementById("dropdownContent");
-
-  toggle.addEventListener("click", function (event) {
-    event.preventDefault(); // evita que el <a> recargue la página
-    content.style.display = content.style.display === "none" ? "block" : "none";
-  });
