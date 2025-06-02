@@ -12,21 +12,14 @@ router.get('/products', productController.showProducts); // Devuelve todos los p
 router.get('/products/:productId', productController.showProductById); //Devuelve el detalle de un producto.
 
 // RUTAS ADMIN
-router.post('/dashboard', productController.createProduct);//Crea un nuevo producto. Esta es la de prueba con los nuevos controllers
 router.get('/dashboard', productController.showProducts); //Devuelve el dashboard del administrador, En el dashboard aparecerán todos los artículos que se hayan subido. Si clickamos en uno de ellos nos llevará a su página para poder actualizarlo o eliminarlo.
+router.post('/dashboard', productController.createProduct);//Crea un nuevo producto. Esta es la de prueba con los nuevos controllers
+router.get('/dashboard/new', productController.showNewProduct); // Devuelve el formulario para subir un artículo nuevo.
 router.get('/dashboard/:productId', productController.showProductById); // Devuelve el detalle de un producto en el dashboard.      
-
-router.get('/dashboard/new', productController.showNewProductForm); // Devuelve el formulario para subir un artículo nuevo.
-router.get('/dashboard/:productId/edit', productController.showEditProductForm); // Devuelve el formulario para editar un producto.
-
-//crea y actualiza
-//router.post('/dashboard', productController.createProduct);//Crea un nuevo producto.
-router.post('/dashboard', upload.single('image'), productController.createProduct); //router.post('/dashboard', auth, upload.single('image'), productController.createProduct);
+router.get('/dashboard/:productId/edit', productController.showEditProduct); // Devuelve el formulario para editar un producto.
 router.put('/dashboard/:productId', productController.updateProduct); // Actualiza un producto.
-
-//elimina
 router.delete('/dashboard/:productId/delete', productController.deleteProduct); // Elimina un producto.
-router.post('/dashboard/:productId/delete', productController.deleteProduct); // Elimina un producto. Usamos POST para evitar problemas con los navegadores que no soportan DELETE en formularios.
+
 
 module.exports = router;
 
