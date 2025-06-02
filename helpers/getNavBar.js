@@ -1,25 +1,27 @@
-/*function getNavBar(isDashboard = false) {
-  // Definimos las categorías de ejemplo
-  const categories = ['home','Camisetas', 'Pantalon', 'Zapatillas', 'Accesorios', 'Login'];
+/* 
+function getNavbar(isAdmin = false) {
+  const categories = require ('../models/Produtc.js);
 
-  // Creamos los enlaces de categorías
-  let categoryLinks = categories.map(category => 
-    `<a href="/products?category=${encodeURIComponent(category)}">${category}</a>`
-  ).join(' | ');
+  let navbar = `
+    <nav style="margin-bottom: 2rem;">
+      <a href="/getproducts">Home</a> | 
+  `;
 
-  // Si estamos en el dashboard, añadimos un enlace extra para subir producto nuevo
-  let dashboardLink = '';
-  if (isDashboard) {
-    dashboardLink = ` | <a href="/dashboard/new">Subir nuevo producto</a>`;
+  categories.forEach(cat => {
+    navbar += `<a href="/getproducts?category=${encodeURIComponent(cat)}">${cat}</a> | `;
+  });
+
+  // Login siempre visible
+  navbar += `<a href="/login">Login</a>`;
+
+  // "Nuevo producto" solo si es admin
+  if (isAdmin) {
+    navbar += ` | <a href="/dashboard/products/create">Nuevo producto</a>`;
   }
 
-  // Armamos el HTML completo de la barra de navegación
-  return `
-    <nav>
-      ${categoryLinks}
-      ${dashboardLink}
-    </nav>
-  `;
+  navbar += `</nav>`;
+
+  return navbar;
 }
 
 module.exports = getNavBar;*/
@@ -36,3 +38,12 @@ module.exports = function getNavBar() {
     </nav>     
   `;
 };
+/*import { categories } from './enums.js';
+
+const generateNavbar = () => {
+  return `
+    <nav>
+      ${categories.map(cat => `<a href="/productos/categoria/${cat}">${cat}</a>`).join(" | ")}
+    </nav>
+  `;
+}; */
