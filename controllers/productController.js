@@ -79,9 +79,9 @@ const productController = {
           <div>Mi Tienda</div>
           <nav>
             <a href="/products">Todos</a>
-            <a href="/products?cat=remeras">Remeras</a>
+            <a href="/products?cat=camisetas">Camisetas</a>
             <a href="/products?cat=pantalones">Pantalones</a>
-            <a href="/products?cat=zapatillas">Zapatillas</a>
+            <a href="/products?cat=zapatos">Zapatos</a>
             <a href="/products?cat=accesorios">Accesorios</a>
             <a href="/login">Login</a>
           </nav>
