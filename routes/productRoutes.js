@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 router.get('/products', productController.showProducts); // Devuelve todos los productos. Cada producto tendrá un enlace a su página de detalle.
 router.get('/products/:productId', productController.showProductById); //Devuelve el detalle de un producto.
 
-// RUTAS ADMIN 3 rutas me quedan por propbar post y shownewproduct y put
+// RUTAS ADMIN
 router.get('/dashboard', productController.showProducts); //Devuelve el dashboard del administrador, En el dashboard aparecerán todos los artículos que se hayan subido. Si clickamos en uno de ellos nos llevará a su página para poder actualizarlo o eliminarlo.
 
 router.post('/dashboard', productController.createProduct);//Crea un nuevo producto. Esta es la de prueba con los nuevos controllers// router.post('/dashboard', upload.single('image'), productController.createProduct);

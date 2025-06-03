@@ -227,7 +227,7 @@ showNewProduct: (req, res) => {
     </head>
     <body>
       <h1>Nuevo Producto</h1>
-      <form action="/dashboard/products/create" method="POST">
+      <form action="/dashboard" method="POST">
         <label>Nombre:
           <input type="text" name="name" required />
         </label>
