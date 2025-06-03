@@ -1,24 +1,16 @@
-const { categories } = require('../models/Product');
-
-function getNavBar() {
-  const categoriasHtml = categories.map(cat => `
-    <li><a href="/products?categories=${encodeURIComponent(cat)}">${cat}</a></li>
-  `).join('');
-
+function getNavBar(isAdmin = false) {
   return `
-    <nav>
-      <ul>
-        <li><a href="/">Inicio</a></li>
-        <li>
-          <a href="/products">Productos</a>
-          <ul class="submenu">
-            ${categoriasHtml}
-            <li><a href="/products">Todas</a></li>
-          </ul>
-        </li>
-        <li><a href="/dashboard">Admin</a></li>
-      </ul>
-    </nav>
+    <header>
+      <div>Mi Tienda</div>
+      <nav>
+        <a href="/products">Todos</a>
+        <a href="/products?cat=camisetas">Camisetas</a>
+        <a href="/products?cat=pantalones">Pantalones</a>
+        <a href="/products?cat=zapatos">Zapatos</a>
+        <a href="/products?cat=accesorios">Accesorios</a>
+        ${isAdmin ? '<a href="/dashboard/new">Nuevo Producto</a>' : '<a href="/login">Login</a>'}
+      </nav>
+    </header>
   `;
 }
 

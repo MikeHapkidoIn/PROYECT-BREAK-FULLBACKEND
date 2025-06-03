@@ -1,21 +1,15 @@
-function getProductCards(products, isDashboard = false) {
-  let html = '';
-  for (let product of products) {
-    html += `
-      <div class="product-card">
-        <img src="${product.image}" alt="${product.name}">
-        <h2>${product.name}</h2>
-        <p>${product.description}</p>
-        <p>${product.price}€</p>
-        <a href="/products/${product._id}">Ver detalle</a>
-        ${isDashboard ? `
-          <a href="/dashboard/${product._id}/edit">Editar</a>
-          <form action="/dashboard/${product._id}/delete?_method=DELETE" method="POST" style="display:inline;">
-            <button type="submit">Eliminar</button>
-          </form>` : ''}
-      </div>`;
-  }
-  return html;
-};
+function getProductCards(products, isAdmin = false) {
+  return `
+    <div class="product-grid">
+      ${products.map(product => `
+        <div class="product-card">
+          <h3>${product.name}</h3>
+          ${product.image ? `<img src="${product.image}" alt="${product.name}" />` : ''}
+          <a class="btn" href="${isAdmin ? `/dashboard/${product._id}` : `/products/${product._id}`}">Ver detalle</a>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
 module.exports = getProductCards;
