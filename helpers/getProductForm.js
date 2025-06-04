@@ -3,8 +3,8 @@ function getProductForm(categories, sizes) {
     <!DOCTYPE html>
     <html lang="es">
     <head>
-      <meta charset="UTF-8" />
-      <title>Nuevo Producto</title>
+       <meta charset="UTF-8" />
+       <title>Nuevo Producto</title>
       <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         label { display: block; margin-top: 10px; }
@@ -15,32 +15,41 @@ function getProductForm(categories, sizes) {
     </head>
     <body>
       <h1>Nuevo Producto</h1>
-      <form action="/dashboard" method="POST">
+
+      <form action="/dashboard" method="POST" enctype="multipart/form-data">
+      
         <label>Nombre:
           <input type="text" name="name" required />
         </label>
+
         <label>Descripción:
           <textarea name="description"></textarea>
         </label>
-        <label>Imagen (URL):
-          <input type="text" name="image" />
+
+        <label>Imagen:
+          <input type="file" name="image" accept="image/*"required/>
         </label>
+
         <label>Categoría:
           <select name="category" required>
             <option value="">Selecciona una categoría</option>
             ${categories.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
           </select>
         </label>
+
         <label>Talle:
           <select name="size">
             <option value="">Selecciona un talle</option>
             ${sizes.map(t => `<option value="${t}">${t}</option>`).join('')}
           </select>
         </label>
+
         <label>Precio:
           <input type="number" name="price" min="0" step="0.01" required />
         </label>
+
         <button type="submit">Crear Producto</button>
+
       </form>
     </body>
     </html>
@@ -48,4 +57,3 @@ function getProductForm(categories, sizes) {
 }
 
 module.exports = getProductForm;
-

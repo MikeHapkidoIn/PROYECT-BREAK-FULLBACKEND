@@ -1,9 +1,11 @@
-// helpers/getProductDetail.js
 function getProductDetail(product, isAdmin) {
   return `
     <div class="container" style="text-align: center; margin: 2rem;">
       <h1>${product.name}</h1>
-      ${product.image ? `<img src="${product.image}" alt="${product.name}" style="width: 250px; border-radius: 10px;" />` : ''}
+      ${product.image && product.image.startsWith('http') 
+        ? `<img src="${product.image}" alt="${product.name}" style="width: 250px; border-radius: 10px;" />`
+        : ''
+      }
       <p>${product.description}</p>
       <p><strong>${product.price} €</strong></p>
       <p>Categoría: ${product.category}</p>
@@ -22,4 +24,5 @@ function getProductDetail(product, isAdmin) {
 }
 
 module.exports = getProductDetail;
+
 

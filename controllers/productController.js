@@ -52,20 +52,24 @@ const productController = {
       console.error('Error al cargar el producto:', error);
       res.status(500).send('Error al cargar el producto');
     }
-  },
-
+},
   createProduct: async (req, res) => {
   try {
-    const { name, description, image, category, size, price } = req.body;
+    const { name, description, category, size, price } = req.body;
 
-    // Validar que category esté en las categorías permitidas
     if (!categories.includes(category)) {
       return res.status(400).send('Categoría no válida');
     }
 
-    // (Opcional) Validar que sizes esté en la lista de talles permitidos
     if (size && !sizes.includes(size)) {
       return res.status(400).send('Talle no válido');
+    }
+
+    const image = req.file?.path || req.file?.url || '';
+
+    const priceNumber = Number(price);
+    if (isNaN(priceNumber)) {
+      return res.status(400).send('Precio no válido');
     }
 
     const newProduct = new Product({
@@ -74,19 +78,17 @@ const productController = {
       image,
       category,
       size,
-      price
+      price: priceNumber
     });
 
     await newProduct.save();
 
-    // Redirigir a detalle o listado
     res.redirect(`/dashboard/${newProduct._id}`);
   } catch (error) {
     console.error('Error al crear producto:', error);
     res.status(500).send('Error al crear el producto');
   }
 },
-
 showNewProduct: (req, res) => {
   res.send(getProductForm(categories, sizes));
 },
@@ -108,7 +110,6 @@ showNewProduct: (req, res) => {
     res.status(500).send('Error al cargar producto');
   }
 },
-
  updateProduct: async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -155,5 +156,3 @@ showNewProduct: (req, res) => {
 };
 
 module.exports = productController;
-
-
