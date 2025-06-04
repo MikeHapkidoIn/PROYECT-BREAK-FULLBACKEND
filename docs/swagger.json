@@ -1,0 +1,205 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Amason API",
+    "version": "1.0.0",
+    "description": "API RESTful para una tienda de ropa con imágenes almacenadas en Cloudinary."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "tags": [
+    { "name": "Público", "description": "Rutas accesibles para todos los usuarios" },
+    { "name": "Administrador", "description": "Rutas protegidas para gestión de productos" }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": ["Público"],
+        "summary": "Obtener todos los productos",
+        "responses": {
+          "200": {
+            "description": "Lista de productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": ["Público"],
+        "summary": "Obtener un producto por ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle del producto",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          },
+          "404": { "description": "Producto no encontrado" }
+        }
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "tags": ["Administrador"],
+        "summary": "Obtener todos los productos (modo administración)",
+        "responses": {
+          "200": {
+            "description": "Lista de productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Administrador"],
+        "summary": "Crear un nuevo producto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string", "format": "binary" },
+                  "category": { "type": "string", "enum": ["camisetas", "pantalones", "zapatos", "accesorios"] },
+                  "size": { "type": "string", "enum": ["xs", "s", "m", "l", "xl"] },
+                  "price": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Producto creado con éxito" },
+          "400": { "description": "Error en la solicitud" }
+        }
+      }
+    },
+    "/dashboard/{productId}": {
+      "get": {
+        "tags": ["Administrador"],
+        "summary": "Obtener un producto por ID para administración",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle del producto",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          },
+          "404": { "description": "Producto no encontrado" }
+        }
+      },
+      "put": {
+        "tags": ["Administrador"],
+        "summary": "Actualizar un producto",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "image": { "type": "string", "format": "binary" },
+                  "category": { "type": "string", "enum": ["camisetas", "pantalones", "zapatos", "accesorios"] },
+                  "size": { "type": "string", "enum": ["xs", "s", "m", "l", "xl"] },
+                  "price": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Producto actualizado con éxito" },
+          "400": { "description": "Error en la solicitud" },
+          "404": { "description": "Producto no encontrado" }
+        }
+      }
+    },
+    "/dashboard/{productId}/delete": {
+      "delete": {
+        "tags": ["Administrador"],
+        "summary": "Eliminar un producto",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Producto eliminado" },
+          "404": { "description": "Producto no encontrado" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string", "description": "URL de la imagen en Cloudinary" },
+          "category": { "type": "string", "enum": ["camisetas", "pantalones", "zapatos", "accesorios"] },
+          "size": { "type": "string", "enum": ["xs", "s", "m", "l", "xl"] },
+          "price": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}
