@@ -3,10 +3,10 @@ const app = express();
 require('dotenv').config();
 const dbConnecction = require('./config/db.js');
 const productRoutes = require('./routes/productRoutes');
+const productApiRoutes = require('./routes/productApiRoutes');
 const methodOverride = require('method-override');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
-const productApiRoutes = require('./routes/productApiRoutes');
 const PORT = process.env.PORT;
 
 

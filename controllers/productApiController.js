@@ -1,4 +1,4 @@
-const Product = require('../models/Product');
+const { Product, sizes, categories } = require('../models/Product');
 
 const apiController = {
 // GET /api/products
@@ -24,7 +24,7 @@ showProductById: async (req, res) => {
   }
 },
 
-// POST /api/products
+// POST /api/create
 createProduct: async (req, res) => {
   try {
     const newProduct = new Product(req.body);
