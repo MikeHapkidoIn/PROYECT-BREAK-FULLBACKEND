@@ -101,7 +101,7 @@ showNewProduct: (req, res) => {
       return res.status(404).send('Producto no encontrado');
     }
 
-    // Solo llamas al helper y mandas el resultado
+    
     const html = getEditProductForm(product, categories, sizes);
     res.send(html);
 
@@ -112,25 +112,35 @@ showNewProduct: (req, res) => {
 },
  updateProduct: async (req, res) => {
   try {
+  
     const productId = req.params.productId;
-    const { name, description, image, category, size, price } = req.body;
+    const { name, description, imageUrl, category, size, price } = req.body;
+    const newImage = req.file?.path || req.file?.url || imageUrl || '';
+
+
+    const priceNumber = Number(price);
+    if (isNaN(priceNumber)) {
+      return res.status(400).send('Precio no válido');
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      { name, description, image, category, size, price },
-      { new: true } // devuelve el producto actualizado
+      {
+        name,
+        description,
+        image: newImage,
+        category,
+        size,
+        price: priceNumber
+      },
+      { new: true }
     );
 
     if (!updatedProduct) {
       return res.status(404).send('Producto no encontrado');
     }
 
-    // Redirige a la vista de todos los productos del dashboard:
-    res.redirect('/dashboard');
-
-    // Si preferís redirigir al detalle del producto:
-    // res.redirect(`/dashboard/productos/${updatedProduct._id}`);
-
+    res.redirect('/dashboard'); 
   } catch (error) {
     console.error('Error al actualizar producto:', error);
     res.status(500).send('Error al actualizar producto');
@@ -153,6 +163,7 @@ showNewProduct: (req, res) => {
     res.status(500).send('Error al eliminar producto');
   }
 }
+
 };
 
 module.exports = productController;

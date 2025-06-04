@@ -14,18 +14,28 @@ function getEditProductForm(product, categories, sizes) {
       </style>
     </head>
     <body>
-      <h1>Editar Producto</h1>
-      <form action="/dashboard/${product._id}" method="POST">
+      
+    <h1>Editar Producto</h1>
+
+      <form action="/dashboard/${product._id}?_method=PUT" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="PUT" />
+
         <label>Nombre:
           <input type="text" name="name" value="${product.name}" required />
         </label>
+
         <label>Descripción:
           <textarea name="description">${product.description || ''}</textarea>
         </label>
-        <label>Imagen (URL):
-          <input type="text" name="image" value="${product.image || ''}" />
+
+        <label>Imagen (URL actual):
+          <input type="text" name="imageUrl" value="${product.image || ''}" />
         </label>
+
+        <label>O Subir nueva imagen:
+          <input type="file" name="image" accept="image/*" />
+        </label>
+
         <label>Categoría:
           <select name="category" required>
             <option value="">Selecciona una categoría</option>
@@ -34,6 +44,7 @@ function getEditProductForm(product, categories, sizes) {
             `).join('')}
           </select>
         </label>
+
         <label>Talle:
           <select name="size">
             <option value="">Selecciona un talle</option>
@@ -42,9 +53,11 @@ function getEditProductForm(product, categories, sizes) {
             `).join('')}
           </select>
         </label>
+
         <label>Precio:
           <input type="number" name="price" min="0" step="0.01" value="${product.price || 0}" required />
         </label>
+
         <button type="submit">Guardar Cambios</button>
       </form>
     </body>
@@ -53,4 +66,5 @@ function getEditProductForm(product, categories, sizes) {
 }
 
 module.exports = getEditProductForm;
+
 
