@@ -14,6 +14,7 @@ function getProductForm(categories, sizes) {
       </style>
     </head>
     <body>
+    
       <h1>Nuevo Producto</h1>
 
       <form action="/dashboard" method="POST" enctype="multipart/form-data">
