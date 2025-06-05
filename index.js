@@ -8,7 +8,8 @@ const methodOverride = require('method-override');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
 const PORT = process.env.PORT;
-
+const authRoutes = require('./routes/authRoutes');
+const session = require('express-session');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -25,10 +26,15 @@ app.use(methodOverride((req, res) => {
 }));
 
 
-
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'mi-clave-secreta',
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use('/', authRoutes);
 app.use('/', productRoutes);
 app.use('/api', productApiRoutes);
 

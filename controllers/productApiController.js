@@ -50,7 +50,7 @@ updateProduct: async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: 'Error al actualizar el producto' });
   }
-},
+}, 
 
 // DELETE /api/products/:productId
  deleteProduct:  async (req, res) => {
