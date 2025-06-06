@@ -102,6 +102,7 @@ Una vez logueado podrás:
 │   └── productApiRoutes.js     
 ├── middlewares
 │   └── authMiddleware.js
+│   └── uploadMiddleware.js
 ├── helpers
 │   ├── template.js
 │   ├── getNavBar.js
@@ -115,6 +116,7 @@ Una vez logueado podrás:
 │   └── productController.test.js
 │   └── POST.test.js
 ├── index.js
+├── .env.js
 └── README.md
 ```
 
