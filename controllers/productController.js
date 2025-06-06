@@ -167,3 +167,4 @@ showNewProduct: (req, res) => {
 };
 
 module.exports = productController;
+

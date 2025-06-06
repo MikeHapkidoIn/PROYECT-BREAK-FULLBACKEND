@@ -93,25 +93,27 @@ Una vez logueado podrás:
 ├── controllers
 │   ├── productController.js
 │   └── authController.js
+│   └── productApiController.js
 ├── models
 │   └── Product.js
 ├── routes
 │   ├── productRoutes.js
 │   └── authRoutes.js
+│   └── productApiRoutes.js     
 ├── middlewares
 │   └── authMiddleware.js
 ├── helpers
 │   ├── template.js
 │   ├── getNavBar.js
 │   └── baseHtml.js
-├── public
-│   └── css
-│       └── styles.css
+│   ├── getProductCard.js
+│   ├── getProductDetail.js
+│   └── getProductForm.js
+├── docs
+│   └── swagger.json      
 ├── test
 │   └── productController.test.js
-├── views (si aplica SSR con HTML)
 ├── index.js
-├── .env
 └── README.md
 ```
 
@@ -173,4 +175,4 @@ Ahí encontrarás toda la documentación interactiva de la API.
 
 ## 🧵 Autor
 
-Desarrollado por [Florencia](https://github.com/tuusuario)
+Desarrollado por Miguel Angel Vera ( https://github.com/MikeHapkidoIn )
