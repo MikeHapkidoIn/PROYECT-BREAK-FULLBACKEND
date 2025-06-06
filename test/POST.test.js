@@ -24,6 +24,9 @@ jest.mock('../helpers/getEditProductForm', () => jest.fn());
 const { Product, sizes, categories, _mockSave } = require('../models/Product');
 const { createProduct } = require('../controllers/productController');
 
+// Spy para silenciar console.error durante los tests
+jest.spyOn(console, 'error').mockImplementation(() => {});
+
 describe('createProduct', () => {
   const baseReqBody = {
     name: 'Producto Test',
@@ -99,5 +102,10 @@ describe('createProduct', () => {
     expect(errorMockSave).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith('Error al crear el producto');
-  });
+  });
+});
+
+// Restaurar console.error después de todos los tests
+afterAll(() => {
+  console.error.mockRestore();
 });

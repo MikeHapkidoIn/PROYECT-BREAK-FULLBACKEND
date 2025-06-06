@@ -113,6 +113,7 @@ Una vez logueado podrás:
 │   └── swagger.json      
 ├── test
 │   └── productController.test.js
+│   └── POST.test.js
 ├── index.js
 └── README.md
 ```

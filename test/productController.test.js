@@ -1,11 +1,11 @@
 const mockSave = jest.fn();
 
-const mockProductInstance = {
-  save: mockSave,
-};
-
 jest.mock('../models/Product', () => {
-  const mockConstructor = jest.fn(() => mockProductInstance);
+  const mockConstructor = jest.fn().mockImplementation(function () {
+    this._id = 'fakeid123';
+    this.save = mockSave;
+    return this;
+  });
 
   mockConstructor.find = jest.fn();
   mockConstructor.findById = jest.fn();
@@ -17,22 +17,20 @@ jest.mock('../models/Product', () => {
     Product: mockConstructor,
     sizes: ['S', 'M', 'L'],
     categories: ['camisetas', 'pantalones', 'zapatillas', 'accesorios'],
-    _mockSave: mockSave
+    _mockSave: mockSave,
   };
 });
 
 jest.mock('../helpers/getEditProductForm', () => jest.fn());
 
-const express  = require('express');
-const request  = require('supertest');
-const getEditProductForm  = require('../helpers/getEditProductForm');
-const { Product, sizes, categories, _mockSave } = require('../models/Product');
-
-const { 
+const express = require('express');
+const request = require('supertest');
+const getEditProductForm = require('../helpers/getEditProductForm');
+const { Product, sizes, categories } = require('../models/Product');
+const {
   showProducts,
   showProductById,
   showNewProduct,
-  createProduct,
   showEditProduct,
   updateProduct,
   deleteProduct,
@@ -42,17 +40,25 @@ beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-beforeEach(() => {
-  jest.clearAllMocks();
-});
-
 afterAll(() => {
   console.error.mockRestore();
 });
 
-describe('GET /products', () => {
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
+
+const createApp = (method, route, handler) => {
   const app = express();
-  app.get('/products', showProducts);
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+  app[method](route, handler);
+  return app;
+};
+
+describe('GET /products', () => {
+  const app = createApp('get', '/products', showProducts);
 
   it('debería devolver una lista de productos', async () => {
     const mockProducts = [
@@ -80,8 +86,7 @@ describe('GET /products', () => {
 });
 
 describe('GET /products/:productId', () => {
-  const app = express();
-  app.get('/products/:productId', showProductById);
+  const app = createApp('get', '/products/:productId', showProductById);
 
   it('debería devolver un producto específico', async () => {
     const mockProduct = { _id: '123', name: 'Producto 1', category: 'Ropa' };
@@ -113,11 +118,7 @@ describe('GET /products/:productId', () => {
 });
 
 describe('PUT /dashboard/:productId', () => {
-  const app = express();
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
-  app.put('/dashboard/:productId', updateProduct);
-
+  const app = createApp('put', '/dashboard/:productId', updateProduct);
   const productId = '123abc';
 
   it('debería actualizar un producto existente', async () => {
@@ -127,21 +128,18 @@ describe('PUT /dashboard/:productId', () => {
       category: 'Test actualizado',
       size: 'l',
       price: 150,
-      image: ''  
+      image: '',
     };
 
     Product.findByIdAndUpdate.mockResolvedValue({
       _id: productId,
-      ...updatedProduct
+      ...updatedProduct,
     });
 
-    const res = await request(app)
-      .put(`/dashboard/${productId}`)
-      .send(updatedProduct);
+    const res = await request(app).put(`/dashboard/${productId}`).send(updatedProduct);
 
-    expect(res.status).toBe(302);  
+    expect(res.status).toBe(302);
     expect(res.headers.location).toBe('/dashboard');
-
     expect(Product.findByIdAndUpdate).toHaveBeenCalledWith(
       productId,
       expect.objectContaining(updatedProduct),
@@ -154,10 +152,7 @@ describe('PUT /dashboard/:productId', () => {
 
     const res = await request(app)
       .put(`/dashboard/${productId}`)
-      .send({
-        name: 'No existe',
-        price: 10,
-      });
+      .send({ name: 'No existe', price: 10 });
 
     expect(res.status).toBe(404);
     expect(res.text).toBe('Producto no encontrado');
@@ -168,10 +163,7 @@ describe('PUT /dashboard/:productId', () => {
 
     const res = await request(app)
       .put(`/dashboard/${productId}`)
-      .send({
-        name: 'Error',
-        price: 'no-numérico',
-      });
+      .send({ name: 'Error', price: 'no-numérico' });
 
     expect(res.status).toBe(400);
     expect(res.text).toBe('Precio no válido');
@@ -179,30 +171,27 @@ describe('PUT /dashboard/:productId', () => {
 });
 
 describe('GET /new-product', () => {
-  const app = express();
-  app.get('/new-product', showNewProduct);
+  const app = createApp('get', '/new-product', showNewProduct);
 
   it('debería devolver el formulario de nuevo producto', async () => {
     const res = await request(app).get('/new-product');
 
     expect(res.status).toBe(200);
     expect(res.text).toContain('<form');
-    expect(res.text).toContain('name="category"');  
-    expect(res.text).toContain('name="size"');      
+    expect(res.text).toContain('name="category"');
+    expect(res.text).toContain('name="size"');
   });
 });
 
 describe('showEditProduct', () => {
-  const req = {
-    params: { productId: '123' }
-  };
-
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    send: jest.fn()
-  };
+  let req, res;
 
   beforeEach(() => {
+    req = { params: { productId: '123' } };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
     jest.clearAllMocks();
   });
 
@@ -214,10 +203,10 @@ describe('showEditProduct', () => {
       image: 'url',
       category: 'Accesorios',
       size: 'm',
-      price: 10
+      price: 10,
     };
 
-    Product.findById = jest.fn().mockResolvedValue(product);
+    Product.findById.mockResolvedValue(product);
     getEditProductForm.mockReturnValueOnce('<form>Otro formulario</form>');
 
     await showEditProduct(req, res);
@@ -228,7 +217,7 @@ describe('showEditProduct', () => {
   });
 
   it('debería responder 404 si el producto no existe', async () => {
-    Product.findById = jest.fn().mockResolvedValue(null);
+    Product.findById.mockResolvedValue(null);
 
     await showEditProduct(req, res);
 
@@ -237,7 +226,7 @@ describe('showEditProduct', () => {
   });
 
   it('debería responder 500 ante un error', async () => {
-    Product.findById = jest.fn().mockRejectedValue(new Error('Error DB'));
+    Product.findById.mockRejectedValue(new Error('Error DB'));
 
     await showEditProduct(req, res);
 
@@ -247,17 +236,15 @@ describe('showEditProduct', () => {
 });
 
 describe('deleteProduct', () => {
-  const req = {
-    params: { productId: '123' }
-  };
-
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    send: jest.fn(),
-    redirect: jest.fn()
-  };
+  let req, res;
 
   beforeEach(() => {
+    req = { params: { productId: '123' } };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+      redirect: jest.fn(),
+    };
     jest.clearAllMocks();
   });
 
@@ -267,7 +254,7 @@ describe('deleteProduct', () => {
     await deleteProduct(req, res);
 
     expect(Product.findByIdAndDelete).toHaveBeenCalledWith('123');
-    expect(res.redirect).toHaveBeenCalledWith('/dashboard'); 
+    expect(res.redirect).toHaveBeenCalledWith('/dashboard');
   });
 
   it('debería responder 404 si el producto no existe', async () => {
@@ -288,69 +275,3 @@ describe('deleteProduct', () => {
     expect(res.send).toHaveBeenCalledWith('Error al eliminar producto');
   });
 });
-
-/*describe('createProduct', () => {
-  let req;
-  let res;
-
-  const baseReqBody = {
-    name: 'Producto Test',
-    description: 'Descripción test',
-    category: 'camisetas',
-    size: 'm',
-    price: '100'
-  };
-
-  beforeEach(() => {
-    req = {
-      body: { ...baseReqBody },
-      file: { path: 'ruta/a/imagen.jpg' }
-    };
-
-    res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-      redirect: jest.fn()
-    };
-
-    mockSave.mockReset();
-  });
-
-  it('debería crear un producto y redirigir', async () => {
-    mockSave.mockResolvedValue({ _id: 'fakeid123' });
-
-    await createProduct(req, res);
-
-    expect(mockSave).toHaveBeenCalled();
-
-    expect(res.redirect).toHaveBeenCalledWith('/dashboard');
-
-    expect(Product).toHaveBeenCalledWith({
-      name: baseReqBody.name,
-      description: baseReqBody.description,
-      category: baseReqBody.category,
-      size: baseReqBody.size,
-      price: 100,    // El controller debería convertir a Number
-      image: req.file.path
-    });
-  });
-
-  it('debería responder 400 si el precio no es numérico', async () => {
-    req.body.price = 'no-numérico';
-
-    await createProduct(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.send).toHaveBeenCalledWith('Precio no válido');
-  });
-
-  it('debería manejar errores de guardado', async () => {
-    mockSave.mockRejectedValue(new Error('Error DB'));
-
-    await createProduct(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith('Error al crear producto');
-  });
-}); */
-
